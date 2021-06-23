@@ -1,5 +1,7 @@
-const _ = require('lodash');
+const a = 100012312;
 
-const obj = [{a:"z",b:"x"},{a:"r",b:"t"}];
+if(a){
+    console.log(true);
+}
 
-console.log(_.get(obj));
+
