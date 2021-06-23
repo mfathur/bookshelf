@@ -24,4 +24,6 @@ const routes = [
         path: "/books/{bookId}",
         handler: () => { }
     },
-]
+];
+
+module.exports = routes;
