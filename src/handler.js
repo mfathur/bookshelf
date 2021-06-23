@@ -94,20 +94,20 @@ const getBookByIdHandler = (request, h) => {
 const editBookByIdHandler = (request, h) => {
     try {
         const { bookId } = request.params;
-        const { name, year,author,summary,publisher,pageCount,readPage,reading } = request.payload;
+        const { name, year, author, summary, publisher, pageCount, readPage, reading } = request.payload;
 
         const updatedAt = new Date().toISOString();
         const index = books.findIndex((book) => book.id == bookId);
 
         if (index !== -1) {
-           
+
             if (name) {
                 if (readPage > books[index].pageCount) {
                     const response = h.response({
                         status: "fail",
                         message: "Gagal memperbarui buku. readPage tidak boleh lebih besar dari pageCount"
                     }).code(400);
-                    
+
                     return response;
                 }
                 books[index] = {
@@ -122,7 +122,7 @@ const editBookByIdHandler = (request, h) => {
                     reading,
                     updatedAt
                 };
-        
+
                 const response = h.response({
                     "status": "success",
                     "message": "Buku berhasil diperbarui"
@@ -149,8 +149,30 @@ const editBookByIdHandler = (request, h) => {
 
 }
 
-const deleteBookByIdHandler = () => {
+const deleteBookByIdHandler = (request, h) => {
+    try {
+        const { bookId } = request.params;
 
+        const index = books.findIndex((book) => book.id == bookId);
+
+        if(index !== -1){
+            books.splice(index,1);
+            const response = h.response({
+                status: 'success',
+                message: 'Buku berhasil dihapus'
+            });
+            response.code(200);
+            return response;
+        }
+
+        const response = h.response({
+            status: "fail",
+            message: "Buku gagal dihapus. Id tidak ditemukan"
+        }).code(404);
+        return response;
+    } catch (e) {
+        console.log(e);
+    }
 }
 
 module.exports = { addBookHandler, getAllBooksHandler, getBookByIdHandler, editBookByIdHandler, deleteBookByIdHandler };
